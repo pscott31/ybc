@@ -1,7 +1,8 @@
 use std::collections::HashSet;
 
+use serde::{Deserialize, Serialize};
 use yew::prelude::*;
-use yew_agent::{Agent, AgentLink, Bridge, Bridged, HandlerId};
+use yew_agent::{Bridge, Bridged, HandlerId, Worker, WorkerLink};
 
 /// Modal actions.
 pub enum ModalMsg {
@@ -90,7 +91,6 @@ impl Component for Modal {
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 #[derive(Clone, Debug, Properties, PartialEq)]
@@ -189,13 +189,12 @@ impl Component for ModalCard {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 
 /// A request to close a modal instance by ID.
 ///
 /// The ID provided in this message must match the ID of the modal which is to be closed, else
 /// the message will be ignored.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ModalCloseMsg(pub String);
 
 /// An agent used for being able to close `Modal` & `ModalCard` instances by ID.
@@ -210,12 +209,12 @@ pub struct ModalCloseMsg(pub String);
 /// // .. snip ..
 /// fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
 ///     let bridge = ModalCloser::dispatcher();
-///     Self{link, props, bridge}
+///     Self { link, props, bridge }
 /// }
 /// ```
 ///
-/// Next, in your component's `view` method, setup a callback to handle your component's close event.
-/// ```rust
+/// Next, in your component's `view` method, setup a callback to handle your component's close
+/// event. ```rust
 /// let closer = self.link.callback(|_| ModalCloseMsg("modal-0".into()));
 /// // ... snip ...
 /// <ModalCard
@@ -226,7 +225,7 @@ pub struct ModalCloseMsg(pub String);
 ///     }
 /// />
 /// ```
-///
+/// 
 /// Finally, in your component's `update` method, send the `ModalCloseMsg` over to the agent which
 /// will forward the message to the modal to cause it to close.
 /// ```rust
@@ -235,21 +234,24 @@ pub struct ModalCloseMsg(pub String);
 ///     true
 /// }
 /// ```
-///
+/// 
 /// This pattern allows you to communicate with a modal by its given ID, allowing
 /// you to close the modal from anywhere in your application.
 pub struct ModalCloser {
-    link: AgentLink<Self>,
+    link: WorkerLink<Self>,
     subscribers: HashSet<HandlerId>,
 }
 
-impl Agent for ModalCloser {
-    type Reach = yew_agent::Context<Self>;
+impl Worker for ModalCloser {
+    type Input = ModalCloseMsg;
     type Message = ();
-    type Input = ModalCloseMsg; // The agent receives requests to close modals by ID.
-    type Output = ModalCloseMsg; // The agent forwards the input to all registered modals.
+    // The agent receives requests to close modals by ID.
+    type Output = ModalCloseMsg;
+    type Reach = yew_agent::Private<Self>;
 
-    fn create(link: AgentLink<Self>) -> Self {
+    // The agent forwards the input to all registered modals.
+
+    fn create(link: WorkerLink<Self>) -> Self {
         Self { link, subscribers: HashSet::new() }
     }
 
