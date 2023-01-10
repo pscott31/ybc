@@ -1,5 +1,5 @@
 use derive_more::Display;
-use yew::events::{Event, FocusEvent, MouseEvent};
+use yew::events::{Event, MouseEvent};
 use yew::prelude::*;
 
 #[derive(Clone, Debug, Properties, PartialEq)]
@@ -41,7 +41,6 @@ pub enum ButtonGroupSize {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 
 #[derive(Clone, Debug, Properties, PartialEq)]
 pub struct ButtonProps {
@@ -81,7 +80,6 @@ pub fn button(props: &ButtonProps) -> Html {
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 #[cfg(feature = "router")]
@@ -179,7 +177,6 @@ mod router {
 pub use router::{ButtonAnchorRouter, ButtonRouter, ButtonRouterProps};
 
 //////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 
 #[derive(Clone, Debug, Properties, PartialEq)]
 pub struct ButtonAnchorProps {
@@ -236,7 +233,6 @@ pub fn button_anchor(props: &ButtonAnchorProps) -> Html {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 
 #[derive(Clone, Debug, Properties, PartialEq)]
 pub struct ButtonInputSubmitProps {
@@ -244,7 +240,7 @@ pub struct ButtonInputSubmitProps {
     pub classes: Classes,
     /// The submit handler to use for this component.
     #[prop_or_default]
-    pub onsubmit: Callback<FocusEvent>,
+    pub onsubmit: Callback<SubmitEvent>,
     /// Render a loading spinner within this component.
     #[prop_or_default]
     pub loading: bool,
@@ -272,7 +268,6 @@ pub fn button_input_submit(props: &ButtonInputSubmitProps) -> Html {
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 #[derive(Clone, Debug, Properties, PartialEq)]

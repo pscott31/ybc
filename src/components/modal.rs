@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use serde::{Deserialize, Serialize};
 use yew::prelude::*;
-use yew_agent::{Bridge, Bridged, HandlerId, Worker, WorkerLink};
+use yew_agent::{HandlerId, Worker, WorkerLink};
 
 /// Modal actions.
 pub enum ModalMsg {
@@ -33,7 +33,7 @@ pub struct ModalProps {
 /// in your app for maximum flexibility.
 pub struct Modal {
     #[allow(dead_code)]
-    subscription: Box<dyn Bridge<ModalCloser>>,
+    // subscription: Box<dyn Bridge<ModalCloser>>,
     is_active: bool,
 }
 
@@ -41,10 +41,13 @@ impl Component for Modal {
     type Message = ModalMsg;
     type Properties = ModalProps;
 
-    fn create(ctx: &Context<Self>) -> Self {
-        let callback = ctx.link().callback(ModalMsg::CloseFromAgent);
-        let subscription = ModalCloser::bridge(callback);
-        Self { subscription, is_active: false }
+    fn create(_ctx: &Context<Self>) -> Self {
+        // let callback = ctx.link().callback(ModalMsg::CloseFromAgent);
+        // let foo = yew_agent::use_bridge(|x| callback.emit(x));
+        // let bar = foo.deref();
+        // let subscription = foo; // ModalCloser::bridge(callback);
+        // Self { subscription, is_active: false }
+        Self { is_active: false }
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
@@ -121,7 +124,7 @@ pub struct ModalCardProps {
 /// in your app for maximum flexibility.
 pub struct ModalCard {
     #[allow(dead_code)]
-    subscription: Box<dyn Bridge<ModalCloser>>,
+    // subscription: Box<dyn Bridge<ModalCloser>>,
     is_active: bool,
 }
 
@@ -129,10 +132,11 @@ impl Component for ModalCard {
     type Message = ModalMsg;
     type Properties = ModalCardProps;
 
-    fn create(ctx: &Context<Self>) -> Self {
-        let callback = ctx.link().callback(ModalMsg::CloseFromAgent);
-        let subscription = ModalCloser::bridge(callback);
-        Self { subscription, is_active: false }
+    fn create(_ctx: &Context<Self>) -> Self {
+        // let callback = ctx.link().callback(ModalMsg::CloseFromAgent);
+        // let subscription = ModalCloser::bridge(callback);
+        // Self { subscription, is_active: false }
+        Self { is_active: false }
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {

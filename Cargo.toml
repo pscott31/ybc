@@ -15,7 +15,7 @@ derive_more = { version="0.99.9", default-features=false, features=["display"] }
 web-sys = { version="0.3", features=["Element", "File", "HtmlCollection", "HtmlSelectElement"] }
 yew = "0.20"
 yew-agent = "0.2.0"
-yew-router = { version="0.16", optional=true }
+yew-router = { version="0.17", optional=true }
 wasm-bindgen = "0.2"
 serde = "1"
 
